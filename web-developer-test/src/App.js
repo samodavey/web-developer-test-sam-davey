@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import "./App.css"
 import PokemonList from './PokemonList'
 import Pagination from './Pagination'
 import axios from 'axios'
@@ -13,7 +14,7 @@ function App() {
 
   useEffect(() => {
     setLoading(true)
-    let cancel
+    let cancel;
     axios.get(currentPageUrl, {
       cancelToken: new axios.CancelToken(c => cancel = c)
     }).then(res => {
@@ -42,13 +43,14 @@ function App() {
 
   return (
     <>
+    <div className="App">
     <h1>Pokemon List</h1>
-    <input type="text" placeholder="Search Pokemon..."></input>
     <PokemonList pokemon={pokemon}/>
     <Pagination 
     gotoNextPage = {nextPageUrl ? gotoNextPage : null}
     gotoPrevPage = {prevPageUrl ? gotoPreviousPage : null}
     />
+    </div>
     </>
   );
 }

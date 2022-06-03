@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react';
+import "./App.css"
 
 export default function PokemonList({pokemon}) {
-    return (
+  const [searchTerm, setSearchTerm] = useState("")
+  return (
+    <>
+    <input type="text" placeholder="Search Pokemon..." onChange={(event) => {setSearchTerm(event.target.value)}}></input>
     <div>
-      {pokemon.map(p => (
-          <div key={p}>{p}</div>
+      {pokemon.filter(p => p.includes(searchTerm)).map(p => (
+          <div className="pokemonList" key={p}>{p} <button>Favourite</button></div>
       ))}
     </div>
+    </>
   )
 }
