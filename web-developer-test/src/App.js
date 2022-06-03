@@ -6,52 +6,53 @@ import axios from 'axios'
 //This uses the axios library which allows async requests to the Poke API
 
 function App() {
-  const [pokemon, setPokemon] = useState([])
-  const [currentPageUrl, setCurrentPageUrl] = useState("https://pokeapi.co/api/v2/pokemon")
-  const [nextPageUrl, setnextPageUrl] = useState()
-  const [prevPageUrl, setprevPageUrl] = useState()
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    setLoading(true)
-    let cancel;
-    axios.get(currentPageUrl, {
-      cancelToken: new axios.CancelToken(c => cancel = c)
-    }).then(res => {
-      setLoading(false)
-      setnextPageUrl(res.data.next)
-      setprevPageUrl(res.data.previous)
-      setPokemon(res.data.results.map(p => p.name))
-    })
-    //Cancel a request everytime we make a new one, incase an old request finishes after a new one
-    return () => { cancel()}
-  }, [currentPageUrl])
-
-
-  //Go to next page
-  function gotoNextPage(){
-    setCurrentPageUrl(nextPageUrl)
-  }
-  
-  //Go to previous page
-  function gotoPreviousPage(){
-    setCurrentPageUrl(prevPageUrl)
-  }
-
-  //Generic loading message to display to the user
-  if(loading) return "Loading..."
+  const [pokemonChosen, setPokemonChosen] = useState(false);
+  const [pokemon, setPokemon] = useState({
+    name: "", 
+    species: "", 
+    img: "",
+    hp: "",
+    attack: "",
+    defense: "",
+    type: ""
+  })
+  const [searchTerm, setSearchTerm] = useState("");
+  const pokemonDetails = () => {
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`).then((response) => {
+      console.log(response)
+      setPokemon({
+        name: searchTerm, 
+        species: response.data.species.name, 
+        img: response.data.sprites.other.dream_world.front_default,
+        hp: response.data.stats[0].base_stat,
+        attack: response.data.stats[1].base_stat,
+        defense: response.data.stats[2].base_stat,
+        type: response.data.types[0].type.name})
+    });
+    setPokemonChosen(true);
+  } 
 
   return (
-    <>
     <div className="App">
     <h1>Pokemon List</h1>
-    <PokemonList pokemon={pokemon}/>
-    <Pagination 
-    gotoNextPage = {nextPageUrl ? gotoNextPage : null}
-    gotoPrevPage = {prevPageUrl ? gotoPreviousPage : null}
-    />
+    <input type="text" placeholder="Search Pokemon..." onChange={(event) => {setSearchTerm(event.target.value.toLowerCase())}}></input>
+    <button onClick={pokemonDetails}>Search Pokemon</button>
+    <div className="displayArea">
+      {!pokemonChosen ? (
+      <h1>Please choose a Pokemon</h1>
+      ) : (
+      <>
+      <h1>{pokemon.name}</h1>
+      <img src={pokemon.img}></img>
+      <h3>Species: {pokemon.species}</h3>
+      <h3>Type: {pokemon.type}</h3>
+      <h4>HP: {pokemon.hp}</h4>
+      <h4>Attack: {pokemon.attack}</h4>
+      <h4>Defense: {pokemon.defense}</h4>
+      </>
+      )}
     </div>
-    </>
+    </div>
   );
 }
 
