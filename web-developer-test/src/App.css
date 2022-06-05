@@ -12,6 +12,8 @@
     height: 40px;
     font-size: 20px;
     padding-left: 10px;
+    align-items: center;
+    flex-direction: column;
 }
 
 .displayArea{
@@ -26,4 +28,10 @@
 
 .displayArea img{
     width: 250px;
+}
+
+.displayArea button{
+    font-size: large;
+    padding: 25px;
+    border-radius: 15px;
 }

@@ -1,7 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import "./App.css"
-import PokemonList from './PokemonList'
-import Pagination from './Pagination'
 import axios from 'axios'
 //This uses the axios library which allows async requests to the Poke API
 
@@ -42,18 +40,34 @@ function App() {
       <h1>Please choose a Pokemon</h1>
       ) : (
       <>
-      <h1>{pokemon.name}</h1>
+      <h1>{capitaliseFirstCharacter(pokemon.name)}</h1>
       <img src={pokemon.img}></img>
-      <h3>Species: {pokemon.species}</h3>
-      <h3>Type: {pokemon.type}</h3>
+      <h3>Species: {capitaliseFirstCharacter(pokemon.species)}</h3>
+      <h3>Type: {capitaliseFirstCharacter(pokemon.type)}</h3>
       <h4>HP: {pokemon.hp}</h4>
       <h4>Attack: {pokemon.attack}</h4>
       <h4>Defense: {pokemon.defense}</h4>
+      <button>Favourite</button>
       </>
       )}
     </div>
     </div>
   );
+}
+
+function capitaliseFirstCharacter(string){
+  //Split the above string whenever a space is encountered
+  const arr = string.split(" ");
+
+  //loop through each element of the array and capitalize the first letter.
+
+  for (var i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+  }
+  //Join all the elements of the array back into a string 
+  //using a blankspace as a separator 
+  const str2 = arr.join(" ");
+  return str2;
 }
 
 export default App;
