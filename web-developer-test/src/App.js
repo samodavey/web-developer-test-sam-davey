@@ -33,21 +33,20 @@ function App() {
   return (
     <div className="App">
     <h1>Pokemon List</h1>
-    <input type="text" placeholder="Search Pokemon..." onChange={(event) => {setSearchTerm(event.target.value.toLowerCase())}}></input>
-    <button onClick={pokemonDetails}>Search Pokemon</button>
+    <input data-testid="searchBar" type="text" placeholder="Search Pokemon..." onChange={(event) => {setSearchTerm(event.target.value.toLowerCase())}}></input>
+    <button data-testid="searchButton" onClick={pokemonDetails}>Search Pokemon</button>
     <div className="displayArea">
       {!pokemonChosen ? (
       <h1>Please choose a Pokemon</h1>
       ) : (
       <>
-      <h1>{capitaliseFirstCharacter(pokemon.name)}</h1>
+      <h1 data-testid="pokemonTitle">{capitaliseFirstCharacter(pokemon.name)}</h1>
       <img src={pokemon.img}></img>
       <h3>Species: {capitaliseFirstCharacter(pokemon.species)}</h3>
-      <h3>Type: {capitaliseFirstCharacter(pokemon.type)}</h3>
+      <h3 data-testid="pokemonType">Type: {capitaliseFirstCharacter(pokemon.type)}</h3>
       <h4>HP: {pokemon.hp}</h4>
       <h4>Attack: {pokemon.attack}</h4>
       <h4>Defense: {pokemon.defense}</h4>
-      <button>Favourite</button>
       </>
       )}
     </div>
